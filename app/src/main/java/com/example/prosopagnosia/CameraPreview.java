@@ -87,30 +87,30 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        int width = 640;
-        int height = 480;
-        if (mCamera != null) {
-            Camera.Size size = mCamera.getParameters().getPreviewSize();
-
-            if (size != null) {
-                width = size.width;
-                height = size.height;
-            }
-        }
-
-        // Swap width and height sizes when in portrait, since it will be rotated 90 degrees
-        if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            int tmp = width;
-            width = height;
-            height = tmp;
-        }
-
-        Camera.Parameters parameters = mCamera.getParameters();
-        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-        Camera.Size optimalSize = getOptimalPreviewSize(sizes, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
-        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-        requestLayout();
-        mCamera.setParameters(parameters);
+//        int width = 640;
+//        int height = 480;
+//        if (mCamera != null) {
+//            Camera.Size size = mCamera.getParameters().getPreviewSize();
+//
+//            if (size != null) {
+//                width = size.width;
+//                height = size.height;
+//            }
+//        }
+//
+//        // Swap width and height sizes when in portrait, since it will be rotated 90 degrees
+//        if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            int tmp = width;
+//            width = height;
+//            height = tmp;
+//        }
+//
+//        Camera.Parameters parameters = mCamera.getParameters();
+//        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+//        Camera.Size optimalSize = getOptimalPreviewSize(sizes, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
+//        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
+//        requestLayout();
+//        mCamera.setParameters(parameters);
 
         try {
             mCamera.setPreviewDisplay(mHolder);
