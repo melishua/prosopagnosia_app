@@ -112,24 +112,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         requestLayout();
         mCamera.setParameters(parameters);
 
-//        int layoutWidth = right - left;
-//        int layoutHeight = bottom - top;
-//
-//        // Computes height and width for potentially doing fit width.
-//        int childWidth = layoutWidth;
-//        int childHeight = (int) ((float) layoutWidth/ (float) width * height);
-//
-//        // If height is too tall using fit width, does fit height instead.
-//        if (childHeight > layoutHeight) {
-//            childHeight = layoutHeight;
-//            childWidth = (int) ((float)layoutHeight / (float)height * width);
-//        }
-//
-//        Log.d("CameraPreview", "onLayout() has been executed");
-//
-//        android.widget.FrameLayout.LayoutParams params = new android.widget.FrameLayout.LayoutParams(childWidth, childHeight);
-//        setLayoutParams(params);
-
         try {
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
