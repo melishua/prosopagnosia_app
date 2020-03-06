@@ -8,6 +8,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Size;
 import android.widget.FrameLayout;
 
 public class RealTimeModeActivity extends AppCompatActivity {
@@ -23,7 +25,7 @@ public class RealTimeModeActivity extends AppCompatActivity {
         // Check camera access
         grantCameraPermission();
         // Create an instance of Camera
-        mCamera = getCameraInstance();
+        safeCameraOpen(0);
 
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
@@ -31,31 +33,41 @@ public class RealTimeModeActivity extends AppCompatActivity {
         preview.addView(mPreview);
     }
 
-    /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
-        Camera c = null;
+    private boolean safeCameraOpen(int id) {
+        boolean qOpened = false;
+
         try {
-            c = Camera.open(); // attempt to get a Camera instance
+            releaseCameraAndPreview();
+            // TODO: specify camera id
+            mCamera = Camera.open();
+            qOpened = (mCamera != null);
+        } catch (Exception e) {
+            Log.e(getString(R.string.app_name), "failed to open Camera");
+            e.printStackTrace();
         }
-        catch (Exception e){
+
+        return qOpened;
+    }
+
+    private void releaseCameraAndPreview() {
+        if (mPreview != null)
+        {
+            mPreview.setCamera(null);
         }
-        return c; // returns null if camera is unavailable
+
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        releaseCamera();              // release the camera immediately on pause event
+        releaseCameraAndPreview();              // release the camera immediately on pause event
     }
 
     protected void onLayout() {}
-
-    private void releaseCamera() {
-        if (mCamera != null){
-            mCamera.release();        // release the camera for other applications
-            mCamera = null;
-        }
-    }
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     public void grantCameraPermission() {
